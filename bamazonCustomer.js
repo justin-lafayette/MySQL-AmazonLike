@@ -72,15 +72,15 @@ function start() {
 
                     var updateProductStock = +dbSelectProduct.stock_quantity - +answer.selectProductQuantity;
 
-                    console.log("update product stock", updateProductStock);
+                    console.log("update product stock ", updateProductStock);
 
                     var purchasePrice = answer.selectProductQuantity * dbSelectProduct.price;
 
-                    console.log("product price", purchasePrice)
+                    console.log("product price ", purchasePrice)
 
                     // Query to update the DB.
                     connection.query(
-                        "UPDATE products SET ? where ?",
+                        "UPDATE products SET ? WHERE ?",
                         [
                             {
                                 stock_quantity: updateProductStock

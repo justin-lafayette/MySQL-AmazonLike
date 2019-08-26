@@ -80,6 +80,53 @@ function startManager() {
 
                 case "Add to Inventory":
 
+                    connection.query("SELECT * FROM products", function( err, res ) {
+
+                        inquirer
+                            .prompt([
+                                {
+                                    name: "selectProduct",
+                                    type: "number",
+                                    message: "Which item do you want to add more of?"
+                                },
+                                {
+                                    name: "updateProduct",
+                                    type: "number",
+                                    message: "How much do you want to add?"
+                                }
+                            ])
+                            .then( function( answer ) {
+
+                                var dbSelectProduct;
+                                for (var i = 0; i < res.length; i++) {
+                                    if (res[i].item_id === answer.selectProduct) {
+                                        dbSelectProduct = res[i];
+
+                                        // Calculate the updated item quantity
+                                        var updateQuantity = +res[i].stock_quantity + +answer.updateProduct
+
+                                        connection.query(
+                                            "UPDATE products SET ? WHERE ?",
+                                            [
+                                                {
+                                                    stock_quantity: updateQuantity
+                                                },
+                                                {
+                                                    item_id: dbSelectProduct.item_id
+                                                }
+                                            ]
+                                        )
+
+                                        console.log("Item quantity has been updated to: " + updateQuantity);
+
+                                        connection.end();
+                                    }
+                                }
+
+
+                            })
+                    })
+
                     return
 
                 case "Add New Product":
