@@ -72,6 +72,8 @@ function startManager() {
 
                             }
                         }
+
+                        connection.end();
                     })
 
                     return
