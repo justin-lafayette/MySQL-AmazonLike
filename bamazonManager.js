@@ -131,10 +131,62 @@ function startManager() {
 
                 case "Add New Product":
 
+                    connection.query("SELECT * FROM products", function( err, res ) {
+
+                        inquirer
+                            .prompt([
+                                {
+                                    name: "nameProduct",
+                                    type: "input",
+                                    message: "What is the name of the new product?"
+                                },
+                                {
+                                    name: "departmentProduct",
+                                    type: "input",
+                                    message: "What is the department for this product?"
+                                },
+                                {
+                                    name: "priceProduct",
+                                    type: "number",
+                                    message: "What is the price of this item?"
+                                },
+                                {
+                                    name: "quantityProduct",
+                                    type: "number",
+                                    message: "How many of this item are available?"
+                                }
+                            ])
+                            .then( function( answer ) {
+                                
+                                // Set all answers to a variable
+                                var nameProduct = answer.nameProduct;
+                                var departmentProduct = answer.departmentProduct;
+                                var priceProduct = answer.priceProduct;
+                                var quantityProduct = answer.quantityProduct;
+
+                                // Create the new row in the SQL DB
+                                connection.query(
+                                    "INSTERT INTO products SET ?",
+                                    {
+                                        nameProduct,
+                                        departmentProduct,
+                                        priceProduct,
+                                        quantityProduct
+                                    },
+                                    function( err ) {
+                                        if( err ) throw err;
+
+                                        console.log("Product successfully added!")
+                                    }
+                                )
+                            })
+                    })
+
                     return
 
                 default:
 
+                    console.log("No valid response received.");
                     return
             }
         })
