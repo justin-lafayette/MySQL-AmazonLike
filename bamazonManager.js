@@ -157,26 +157,22 @@ function startManager() {
                                 }
                             ])
                             .then( function( answer ) {
-                                
-                                // Set all answers to a variable
-                                var nameProduct = answer.nameProduct;
-                                var departmentProduct = answer.departmentProduct;
-                                var priceProduct = answer.priceProduct;
-                                var quantityProduct = answer.quantityProduct;
 
                                 // Create the new row in the SQL DB
                                 connection.query(
-                                    "INSTERT INTO products SET ?",
+                                    "INSERT INTO products SET ?",
                                     {
-                                        nameProduct,
-                                        departmentProduct,
-                                        priceProduct,
-                                        quantityProduct
+                                        product_name: answer.nameProduct,
+                                        department_name: answer.departmentProduct,
+                                        price: answer.priceProduct,
+                                        stock_quantity: answer.quantityProduct
                                     },
                                     function( err ) {
                                         if( err ) throw err;
 
                                         console.log("Product successfully added!")
+
+                                        connection.end();
                                     }
                                 )
                             })
